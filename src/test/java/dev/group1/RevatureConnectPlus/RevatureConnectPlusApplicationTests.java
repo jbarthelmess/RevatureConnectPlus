@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Set;
+
 @SpringBootTest
 class RevatureConnectPlusApplicationTests {
 
@@ -50,9 +52,16 @@ class RevatureConnectPlusApplicationTests {
 	}
 
 	@Test
+	void create_users() {
+		this.create_user();
+		this.create_user();
+		this.create_user();
+	}
+
+	@Test
 	void get_user_by_userId(){
 		int id = testUserIds.getLastId();
-		User user = userRepo.findUserByUserId(id);
+		User user = userRepo.findById(id).get();
 		System.out.println(user);
 	}
 
