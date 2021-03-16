@@ -9,31 +9,31 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class RevatureConnectPlusApplicationTests {
 
-	private static int currentId;
+	private int userCountTest;
 
 	@Autowired
 	UserRepo userRepo;
 
-	public static void setCurrentId(int id) {
-		currentId = id;
+	private void setUserCount(int userCount){
+		this.userCountTest = userCount;
 	}
 
-	public static int getCurrentId(){
-		return currentId;
+	public int getUserCount(){
+		return this.userCountTest;
 	}
 
 	@Test
+	void test_count(){
+		setUserCount((int) userRepo.count());
+		System.out.println(getUserCount());
+	}
+
+	private static TestUserCount testUserIds;
+
+	@Test
 	void create_user() {
-		int usernameCount;
-		// to adjust for the username unique constraint;
-		if(userRepo.count()>0){
-			usernameCount = (int) userRepo.count();
-		}else{
-			usernameCount = 0;
-		}
-		// starts count at 0
-		TestUserCount testUserIds = new TestUserCount(usernameCount);
-		testUserIds.next(); // iterate idCount and set lastId to previous idCount
+		setUserCount((int) userRepo.count());
+		testUserIds = new TestUserCount(getUserCount());
 
 		// sets username and display name strings based on count...
 		String userName = "TestUser" + testUserIds.getIdCount();
@@ -43,23 +43,22 @@ class RevatureConnectPlusApplicationTests {
 		User testUser = new User(0, userName, "testPassword!", displayName);
 		userRepo.save(testUser);
 
-		// to save username count for duplicate testing and set id of recently created user...
-		testUserIds.setLastId(testUserIds.getIdCount());
-		setCurrentId(testUser.getUserId());
+		testUserIds.next();
 
-		// logging...
-		System.out.println("TestUser: " + testUser + "\n" + "ID from counter: " + testUserIds.getIdCount());
+		// to save username count for duplicate testing and set id of recently created user...
+		System.out.println("TestUser: " + testUser + "\n" + testUserIds.toString());
 	}
 
 	@Test
 	void get_user_by_userId(){
-		User user = userRepo.findUserByUserId(getCurrentId());
+		int id = testUserIds.getLastId();
+		User user = userRepo.findUserByUserId(id);
 		System.out.println(user);
 	}
 
 	@Test
 	void delete_user_by_userId(){
-		int id = getCurrentId();
+		int id = testUserIds.getLastId();
 		userRepo.deleteById(id);
 		System.out.println("Deleted user " + id);
 	}

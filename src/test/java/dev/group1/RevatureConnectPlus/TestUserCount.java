@@ -1,24 +1,19 @@
 package dev.group1.RevatureConnectPlus;
 
 public class TestUserCount{
-    private static int idCount;
-    public int lastId;
-
-    public TestUserCount(){
-        idCount = 0;
-        lastId = 0;
-    }
+    private int idCount;
+    private int lastId;
 
     public TestUserCount(int id){
-        lastId = id;
-        idCount = lastId ++;
+        this.lastId = id;
+        this.idCount = id + 1;
     }
 
     public int getLastId() {
         return lastId;
     }
 
-    public void setLastId(int id) {
+    private void setLastId(int id) {
         lastId = id;
     }
 
@@ -26,25 +21,20 @@ public class TestUserCount{
         return idCount;
     }
 
-    public void setIdCount(int idCount) {
-        idCount = idCount;
+    private void setIdCount(int id) {
+        idCount = id;
     }
 
     public void next(){
-        lastId = idCount;
-        idCount++;
-    }
-
-
-    public static void main(String[] args) {
-
+        setLastId(idCount);
+        setIdCount(idCount+ 1);
     }
 
     @Override
     public String toString() {
         return "TestUserCount{" +
-                "idCount=" + idCount +
-                ", lastId=" + lastId +
+                "idCount=" + getIdCount() +
+                ", lastId=" + getLastId() +
                 '}';
     }
 }
