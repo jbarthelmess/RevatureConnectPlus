@@ -31,22 +31,37 @@ class RevatureConnectPlusApplicationTests {
 		}else{
 			usernameCount = 0;
 		}
+		// starts count at 0
 		TestUserCount testUserIds = new TestUserCount(usernameCount);
-		testUserIds.next();
-		String username = "TestUser" + testUserIds.getIdCount();
-		User testUser = new User(0, username, "testPassword!", "Test User1");
+		testUserIds.next(); // iterate idCount and set lastId to previous idCount
+
+		// sets username and display name strings based on count...
+		String userName = "TestUser" + testUserIds.getIdCount();
+		String displayName = "Test CreateUser" + testUserIds.getIdCount();
+
+		// create user object then pass in to UserRepo ... magic!
+		User testUser = new User(0, userName, "testPassword!", displayName);
 		userRepo.save(testUser);
+
+		// to save username count for duplicate testing and set id of recently created user...
 		testUserIds.setLastId(testUserIds.getIdCount());
 		setCurrentId(testUser.getUserId());
-		System.out.println("TestUser: " + testUser + "\n" + " ID: " + testUserIds.getIdCount() + "\n'");
+
+		// logging...
+		System.out.println("TestUser: " + testUser + "\n" + "ID from counter: " + testUserIds.getIdCount());
 	}
 
-
-
 	@Test
-	void get_user_by_id(){
+	void get_user_by_userId(){
 		User user = userRepo.findUserByUserId(getCurrentId());
 		System.out.println(user);
+	}
+
+	@Test
+	void delete_user_by_userId(){
+		int id = getCurrentId();
+		userRepo.deleteById(id);
+		System.out.println("Deleted user " + id);
 	}
 
 }

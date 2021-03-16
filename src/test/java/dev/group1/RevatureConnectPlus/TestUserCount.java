@@ -31,8 +31,8 @@ public class TestUserCount{
     }
 
     public void next(){
-        idCount++;
         lastId = idCount;
+        idCount++;
     }
 
 
