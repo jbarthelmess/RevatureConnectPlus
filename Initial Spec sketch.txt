@@ -1,0 +1,56 @@
+// Better Revature Connect
+================================================================
+Users table {
+    user_id,
+    username,
+    password,
+    Display Name,
+    // maybe user theme
+}
+
+Post table {
+    post_id,
+    user_id,
+    timestamp,
+    content string,
+    // maybe edited
+}
+
+Like table { // join table
+    user_id,
+    post_id,
+}
+
+comment table {
+    user_id,
+    post_id,
+    comment string
+}
+================================================================ services 
+Make new posts
+
+Delete posts 
+
+comment on posts
+
+like posts
+
+Sign up (Create new users)
+
+log in
+
+Close Account
+
+Search for posts
+
+Get posts (most recent posts)
+
+Get User Account info
+======================================================== front end 
+Account info 
+
+Landing Main page
+
+Log in page
+
+Sign up page
