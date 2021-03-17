@@ -1,5 +1,6 @@
 # RevatureConnectPlus
 
+
 ## User stories
 |As a(n) | I want to | So that |
 |--------|-----------|---------|
@@ -12,4 +13,3 @@
 |Associate|Comment On Posts|I can more clearly and deliberately interact with my colleagues when I have something more in-depth to say about what they have posted|
 |Associate|View Account Info|See if I want to edit my account settings|
 |Associate|Search for Posts|Find posts I want to refer to where I only remember part of what was in the post|
-

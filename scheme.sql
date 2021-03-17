@@ -1,7 +1,8 @@
-create table user_(
+create table plus_user(
     user_id int primary key generated always as identity,
     username varchar(256) not null,
-    password varchar(256) not null,
+    -- can update to password and use passhash instead or chkpass extension
+    password_ varchar(256) not null,
     display_name varchar(256)
 );
 
@@ -28,4 +29,4 @@ alter table like_ add foreign key (user_id) references user_(user_id);
 alter table comment add foreign key (user_id) references user_(user_id);
 alter table like_ add foreign key (post_id) references post(post_id);
 alter table comment add foreign key (post_id) references post(post_id);
-alter table username add constraint username unique;
+alter table user_ add constraint username unique;
