@@ -46,4 +46,10 @@ public class UserServiceImpl implements UserService {
         return !this.userRepo.existsById(userId);
     }
 
+    @Override
+    public User login(User loginAttempt) {
+        //this.userRepo.findByUsernameAndPassword(loginAttempt.getUsername(), loginAttempt.getPassword()).get();
+        return null;
+    }
+
 }

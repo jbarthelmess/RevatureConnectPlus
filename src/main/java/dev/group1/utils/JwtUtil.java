@@ -16,7 +16,7 @@ public class JwtUtil {
     public static DecodedJWT isValidJWT(String token) {
         try {
             return JWT.require(algo).withClaimPresence("userId").withClaimPresence("username").withClaimPresence("displayName").build().verify(token);
-        } catch(JWTVerificationException e) {
+        } catch(JWTVerificationException e) { // throws if invalid
             // will add logging later, or in an aspect
             return null;
         }
