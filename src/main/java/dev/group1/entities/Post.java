@@ -3,6 +3,7 @@ package dev.group1.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
 @Entity
 @Table(name="post")
 public class Post {
