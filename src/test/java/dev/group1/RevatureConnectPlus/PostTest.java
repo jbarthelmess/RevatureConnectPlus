@@ -37,14 +37,14 @@ public class PostTest {
     @Test
     @Rollback
     void create_post(){
-        Post post = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         System.out.println(post);
     }
 
     @Test
     @Rollback
     void get_post_by_post_id(){
-        Post post = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post);
         Post newPost = postRepo.findById(post.getPostId()).get();
         System.out.println(newPost);
@@ -53,13 +53,13 @@ public class PostTest {
     @Test
     @Rollback
     void get_all_posts(){
-        Post post0 = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post0 = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post0);
-        Post post1 = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post1 = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post1);
-        Post post2 = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post2 = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post2);
-        Post post3 = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post3 = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post3);
 
         Set<Post> allPosts = new HashSet<>((Collection<? extends Post>) postRepo.findAll());
@@ -69,9 +69,9 @@ public class PostTest {
     @Test
     @Rollback
     void update_post(){
-        Post post = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post);
-        Post newPost = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "This content has been updated");
+        Post newPost = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "This content has been updated");
         postRepo.save(newPost);
         System.out.println(newPost);
     }
@@ -79,7 +79,7 @@ public class PostTest {
     @Test
     @Rollback
     void delete_post_by_post_id(){
-        Post post = new Post(0, user.getUserId(), new Timestamp(System.currentTimeMillis()), "The is a test content and should be rolledbacked!");
+        Post post = new Post(0, user.getUserId(), System.currentTimeMillis()/1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post);
         postRepo.deleteById(post.getPostId());
     }
