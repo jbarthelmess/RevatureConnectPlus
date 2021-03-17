@@ -13,3 +13,34 @@
 |Associate|Comment On Posts|I can more clearly and deliberately interact with my colleagues when I have something more in-depth to say about what they have posted|
 |Associate|View Account Info|See if I want to edit my account settings|
 |Associate|Search for Posts|Find posts I want to refer to where I only remember part of what was in the post|
+
+## Endpoints
+#### User Endpoints
+`GET /user` <-- get user account info
+
+`POST /user/registration` <-- create new user account
+
+`POST /user/login` <-- login
+
+`DELETE /user` <-- delete user account
+
+`PATCH /user` <-- update user info
+
+#### POST ENDPOINTS
+`GET /post` <-- get visible posts
+
+`POST /post` <-- create new post
+
+`POST /post/{id}/like` <-- like a post {id}
+
+`POST /post/{id}/comment` <-- comment on a post {id}
+
+`GET /post/{id}/comment` <-- view comments on post {id}
+
+`PATCH /post/{id}` <-- update a post {id}
+
+`DELETE /post/{id}` <-- delete post {id}
+
+`DELETE /post/{id}/comment/{commentId}` <-- delete a comment on post {id} with {comment_id}
+
+`DELETE /post/{id}/like` <-- unlike post {id}
