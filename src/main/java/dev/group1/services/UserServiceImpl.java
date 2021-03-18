@@ -2,6 +2,7 @@ package dev.group1.services;
 
 import dev.group1.entities.User;
 import dev.group1.repos.UserRepo;
+import dev.group1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User newUser) {
+        User check = this.userRepo.findByUsername(newUser.getUsername());
+        if(check == null) return null;
         this.userRepo.save(newUser);
         return newUser;
     }
@@ -47,9 +50,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(User loginAttempt) {
-        //this.userRepo.findByUsernameAndPassword(loginAttempt.getUsername(), loginAttempt.getPassword()).get();
-        return null;
+    public String login(User loginAttempt) {
+        User user = this.userRepo.findByUsernameAndPassword(loginAttempt.getUsername(), loginAttempt.getPassword());
+        if(user == null) {
+            return null;
+        }
+        return JwtUtil.generate(user);
     }
 
 }
