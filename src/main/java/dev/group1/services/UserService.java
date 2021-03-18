@@ -10,4 +10,5 @@ public interface UserService {
     Set<User> getAllUsers();
     User updateUser(User updatedUser);
     boolean deleteUserByUserId(int userId);
+    String login(User loginAttempt);
 }
