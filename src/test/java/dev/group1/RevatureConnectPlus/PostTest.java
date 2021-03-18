@@ -82,4 +82,16 @@ public class PostTest {
         postRepo.save(post);
         postRepo.deleteById(post.getPostId());
     }
+
+    @Test
+    void get_first_50_posts(){
+        Set<Post> top_posts = postRepo.findFirst50ByOrderByTimestamp();
+        System.out.println(top_posts);
+    }
+
+    @Test
+    void find_next_50(){
+        Set<Post> top_posts = postRepo.findTop50ByTimestampAfter(1616075773L);
+        System.out.println(top_posts);
+    }
 }

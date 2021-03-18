@@ -14,4 +14,8 @@ public interface PostService {
     Post updatePost(Post updatedPost);
 
     boolean deletePost(int postId);
+
+    Set<Post> getFirst50Posts();
+
+    Set<Post> getNext50Posts(long timestamp);
 }

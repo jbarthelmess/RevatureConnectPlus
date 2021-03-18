@@ -18,8 +18,11 @@ public class PostController {
 
     @GetMapping("/post")
     public Set<Post> retrieveVisiblePosts() {
-        return postService.getAllPosts();
+        return postService.getFirst50Posts();
     }
+
+    @GetMapping("/post/next/{timestamp}")
+    public Set<Post> retrieveNextPosts(@PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
 
     @PostMapping("/post")
     public Post createPost(@RequestBody Post post) {

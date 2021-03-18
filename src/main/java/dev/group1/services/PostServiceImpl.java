@@ -19,6 +19,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post registerPost(Post post) {
+        post.setTimestamp(System.currentTimeMillis());
         this.postRepo.save(post);
         return post;
     }
@@ -44,5 +45,16 @@ public class PostServiceImpl implements PostService {
     public boolean deletePost(int postId) {
         this.postRepo.deleteById(postId);
         return !this.postRepo.existsById(postId);
+    }
+
+    @Override
+    public Set<Post> getFirst50Posts() {
+        return this.postRepo.findFirst50ByOrderByTimestamp();
+    }
+
+    @Override
+    /* for now use timestamp 1616075773L  for proof on concept*/
+    public Set<Post> getNext50Posts(long timestamp) {
+        return this.postRepo.findTop50ByTimestampAfter(timestamp);
     }
 }
