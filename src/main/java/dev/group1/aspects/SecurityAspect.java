@@ -13,7 +13,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-//import javax.servlet.http.HttpServletResponse;
 
 @Component
 @Aspect
@@ -27,10 +26,12 @@ public class SecurityAspect {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         String jwt = request.getHeader("Authorization");
         if(jwt == null){
+            // add logging later
             response.sendError(401, "No JWT Provided. Please Log in");
         }
         DecodedJWT decodedJWT = JwtUtil.isValidJWT(jwt);
         if(decodedJWT == null) {
+            // add logging later
             response.sendError(401, "Illegal JWT Provided. Please Log in");
         } else {
             // will want to pass a user object to most function calls for info
