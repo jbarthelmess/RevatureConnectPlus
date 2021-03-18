@@ -10,7 +10,7 @@ import java.util.Set;
 
 @SpringBootTest
 class RevatureConnectPlusApplicationTests {
-
+/*
 	private int userCountTest;
 
 	@Autowired
@@ -71,5 +71,5 @@ class RevatureConnectPlusApplicationTests {
 		userRepo.deleteById(id);
 		System.out.println("Deleted user " + id);
 	}
-
+*/
 }
