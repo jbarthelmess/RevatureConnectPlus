@@ -20,6 +20,17 @@ group = 'dev.group1'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'dev.group1.RevatureConnectPlus.RevatureConnectPlusApplication'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
 	mavenCentral()
 }
