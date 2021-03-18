@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 @Table(name="post")
 public class Post {
 
+    // like counter
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="post_id")
