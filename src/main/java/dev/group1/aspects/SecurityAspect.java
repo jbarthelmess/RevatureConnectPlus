@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @Aspect
 public class SecurityAspect {
-    @Pointcut("@annotation(Authorize)")
+    @Pointcut("@annotation(dev.group1.aspects.Authorize)")
     private void authorizationCheck(){}
 
     @Around("authorizationCheck()")
