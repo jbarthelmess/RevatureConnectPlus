@@ -12,15 +12,15 @@ import java.util.Set;
 
 @Component
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
     @Autowired
     PostRepo postRepo;
 
     @Override
     public Post registerPost(Post post) {
-       this.postRepo.save(post);
-       return post;
+        this.postRepo.save(post);
+        return post;
     }
 
     @Override

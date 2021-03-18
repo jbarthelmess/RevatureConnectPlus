@@ -1,10 +1,10 @@
 package dev.group1.RevatureConnectPlus;
 
-public class TestUserCount{
+public class TestUserCount {
     private int idCount;
     private int lastId;
 
-    public TestUserCount(int id){
+    public TestUserCount(int id) {
         this.lastId = id;
         this.idCount = id + 1;
     }
@@ -25,9 +25,9 @@ public class TestUserCount{
         idCount = id;
     }
 
-    public void next(){
+    public void next() {
         setLastId(idCount);
-        setIdCount(idCount+ 1);
+        setIdCount(idCount + 1);
     }
 
     @Override

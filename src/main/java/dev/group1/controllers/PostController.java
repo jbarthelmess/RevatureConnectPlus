@@ -17,39 +17,39 @@ public class PostController {
     PostService postService;
 
     @GetMapping("/post")
-    public Set<Post> retrieveVisiblePosts(){
+    public Set<Post> retrieveVisiblePosts() {
         return postService.getAllPosts();
     }
 
     @PostMapping("/post")
-    public Post createPost(@RequestBody Post post){
+    public Post createPost(@RequestBody Post post) {
         return postService.registerPost(post);
     }
 
     @PostMapping("/post/{id}/like")
     // user info sent in  jwt
     // @Authorize // on top of everything
-    public boolean likePost(User user, @PathVariable int id){
+    public boolean likePost(User user, @PathVariable int id) {
         return false;
     }
 
     @PostMapping("/post/{id}/comment")
-    public Object /*Comment*/ commentPost(@PathVariable int id, @RequestBody Object /*Comment*/ comment){
+    public Object /*Comment*/ commentPost(@PathVariable int id, @RequestBody Object /*Comment*/ comment) {
         return null;
     }
 
     @GetMapping("/post/{id}/comment")
-    public Object /*Set<Comment>*/ postComments(@PathVariable int id){
+    public Object /*Set<Comment>*/ postComments(@PathVariable int id) {
         return null;
     }
 
     @PutMapping("/post/{id}")
-    public Post updatePost(@PathVariable int id, @RequestBody Post post){
+    public Post updatePost(@PathVariable int id, @RequestBody Post post) {
         return postService.updatePost(post);
     }
 
     @DeleteMapping("/post/{id}")
-    public boolean deletePost(@PathVariable int id){
+    public boolean deletePost(@PathVariable int id) {
         return postService.deletePost(id);
     }
 }
