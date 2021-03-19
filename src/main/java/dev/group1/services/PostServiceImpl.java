@@ -12,15 +12,16 @@ import java.util.Set;
 
 @Component
 @Service
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
     @Autowired
     PostRepo postRepo;
 
     @Override
     public Post registerPost(Post post) {
-       this.postRepo.save(post);
-       return post;
+        post.setTimestamp(System.currentTimeMillis());
+        this.postRepo.save(post);
+        return post;
     }
 
     @Override
@@ -44,5 +45,16 @@ public class PostServiceImpl implements PostService{
     public boolean deletePost(int postId) {
         this.postRepo.deleteById(postId);
         return !this.postRepo.existsById(postId);
+    }
+
+    @Override
+    public Set<Post> getFirst50Posts() {
+        return this.postRepo.findFirst50ByOrderByTimestamp();
+    }
+
+    @Override
+    /* for now use timestamp 1616075773L  for proof on concept*/
+    public Set<Post> getNext50Posts(long timestamp) {
+        return this.postRepo.findTop50ByTimestampAfter(timestamp);
     }
 }

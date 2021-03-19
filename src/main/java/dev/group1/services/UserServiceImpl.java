@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUserId(int userId){
+    public User getUserByUserId(int userId) {
         return this.userRepo.findById(userId).get();
     }
 
@@ -38,13 +38,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User updatedUser){
+    public User updateUser(User updatedUser) {
         this.userRepo.save(updatedUser);
         return updatedUser;
     }
 
     @Override
-    public boolean deleteUserByUserId(int userId){
+    public boolean deleteUserByUserId(int userId) {
         this.userRepo.deleteById(userId);
         return !this.userRepo.existsById(userId);
     }
