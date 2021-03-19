@@ -43,15 +43,10 @@ public class PostController {
 
     @PutMapping("/post/{id}")
     @Authorize
-    public Post updatePost(User user, @PathVariable int id, @RequestBody Post post) {
+    public Post updatePost(UserDTO user, @PathVariable int id, @RequestBody Post post) {
         return postService.updatePost(post);
     }
-
-    @DeleteMapping("/post/{id}")
-    @Authorize
-    public boolean deletePost(User user, @PathVariable int id) {
-        return postService.deletePost(id);
-    }
+    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @PostMapping("/post/{id}/like")
