@@ -1,9 +1,5 @@
-package dev.group1.RevatureConnectPlus;
+package dev.group1.revatureconnectplus;
 
-import dev.group1.entities.User;
-import dev.group1.repos.UserRepo;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
