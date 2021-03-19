@@ -1,4 +1,4 @@
-package dev.group1.RevatureConnectPlus;
+package dev.group1.revatureconnectplus;
 
 import dev.group1.entities.User;
 import dev.group1.repos.UserRepo;

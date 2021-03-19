@@ -1,4 +1,4 @@
-package dev.group1.RevatureConnectPlus;
+package dev.group1.revatureconnectplus;
 
 public class TestUserCount{
     private int idCount;

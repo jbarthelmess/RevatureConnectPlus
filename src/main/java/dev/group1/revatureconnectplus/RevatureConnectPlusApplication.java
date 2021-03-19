@@ -1,4 +1,4 @@
-package dev.group1.RevatureConnectPlus;
+package dev.group1.revatureconnectplus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

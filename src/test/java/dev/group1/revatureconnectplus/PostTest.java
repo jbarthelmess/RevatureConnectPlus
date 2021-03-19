@@ -1,4 +1,4 @@
-package dev.group1.RevatureConnectPlus;
+package dev.group1.revatureconnectplus;
 
 import dev.group1.entities.Post;
 import dev.group1.entities.User;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
