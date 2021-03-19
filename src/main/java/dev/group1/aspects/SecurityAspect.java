@@ -7,12 +7,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Component
 @Aspect
@@ -23,16 +24,17 @@ public class SecurityAspect {
     @Around("authorizationCheck()")
     public Object checkJWT(ProceedingJoinPoint pjp) throws Throwable{
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         String jwt = request.getHeader("Authorization");
         if(jwt == null){
             // add logging later
-            response.sendError(401, "No JWT Provided. Please Log in");
+            System.out.println("Responding with an error for no JWT");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No JWT provided. Please log in");
         }
         DecodedJWT decodedJWT = JwtUtil.isValidJWT(jwt);
         if(decodedJWT == null) {
             // add logging later
-            response.sendError(401, "Illegal JWT Provided. Please Log in");
+            System.out.println("Responding with an error for Invalid JWT");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT provided. Please log in.");
         } else {
             // will want to pass a user object to most function calls for info
             User user = new User();
@@ -43,6 +45,5 @@ public class SecurityAspect {
             args[0] = user;
             return pjp.proceed(args);
         }
-        return null;
     }
 }

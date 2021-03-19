@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
@@ -31,7 +31,7 @@ public class UserController {
     public String registerUser(@RequestBody User newUser){
         User user = this.userService.registerUser(newUser);
         if(user == null) {
-            throw new HttpClientErrorException(HttpStatus.CONFLICT, "User with username "+newUser.getUsername()+" already exists, must pick a new username");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Registration attempt failed, please choose a different username");
         }
         return JwtUtil.generate(user);
     }
@@ -58,7 +58,9 @@ public class UserController {
     @PostMapping("/user/login")
     public String login(@RequestBody User loginAttempt) {
         String check = this.userService.login(loginAttempt);
-        if(check == null) throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Login Attempt failed, please try again");
+        if(check == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login Attempt failed, please try again");
+        }
         return check;
     }
 }
