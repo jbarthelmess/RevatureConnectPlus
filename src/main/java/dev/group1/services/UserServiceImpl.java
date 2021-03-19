@@ -21,9 +21,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User newUser) {
         User check = this.userRepo.findByUsername(newUser.getUsername());
-        if(check == null) return null;
-        this.userRepo.save(newUser);
-        return newUser;
+        if(check == null) {
+            this.userRepo.save(newUser);
+            return newUser;
+        }
+        return null;
     }
 
     @Override

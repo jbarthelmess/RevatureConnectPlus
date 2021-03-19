@@ -31,7 +31,7 @@ public class UserController {
     public String registerUser(@RequestBody User newUser){
         User user = this.userService.registerUser(newUser);
         if(user == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Registration attempt failed, please choose a different username");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration attempt failed, please choose a different username");
         }
         return JwtUtil.generate(user);
     }
