@@ -34,24 +34,6 @@ public class PostController {
         return postService.registerPost(post);
     }
 
-    @PostMapping("/post/{id}/like")
-    @Authorize
-    public boolean likePost(User user, @PathVariable int id) {
-        return false;
-    }
-
-    @PostMapping("/post/{id}/comment")
-    @Authorize
-    public Comment commentPost(User user, @PathVariable int id, @RequestBody Comment comment) {
-        return null;
-    }
-
-    @GetMapping("/post/{id}/comment")
-    @Authorize
-    public Set<Comment> postComments(User user, @PathVariable int id) {
-        return null;
-    }
-
     @PutMapping("/post/{id}")
     @Authorize
     public Post updatePost(User user, @PathVariable int id, @RequestBody Post post) {
@@ -63,4 +45,32 @@ public class PostController {
     public boolean deletePost(User user, @PathVariable int id) {
         return postService.deletePost(id);
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @PostMapping("/post/{id}/like")
+    @Authorize
+    public boolean likePost(User user, @PathVariable int id) {
+        return false;
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @PostMapping("/post/{id}/comment")
+    @Authorize
+    public Comment commentPost(User user, @PathVariable int id, @RequestBody Comment /*CommentDTO*/ commentDTO) {
+        Comment comment = new Comment();
+        comment.setUserId(user.getUserId());
+        comment.setCommentId(0);
+        comment.setPostId(id);
+        comment.setContentString(commentDTO.getContentString());
+        return comment;
+    }
+
+    @GetMapping("/post/{id}/comment")
+    @Authorize
+    public Set<Comment> postComments(User user, @PathVariable int id) {
+
+        return null;
+    }
+
 }
