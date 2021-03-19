@@ -20,7 +20,7 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private int postId;
 
-    @Column(name = "content_string")
+    @Column(name = "comment_string")
     private String contentString;
 
     @Column(name = "comment_timestamp")

@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public boolean deleteComment(int commentId) {
-        this.commentRepo.findById(commentId);
+        this.commentRepo.deleteById(commentId);
         return !this.commentRepo.existsById(commentId);
     }
 }
