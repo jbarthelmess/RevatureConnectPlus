@@ -1,10 +1,14 @@
 package dev.group1.controllers;
 
+import dev.group1.aspects.Authorize;
 import dev.group1.entities.User;
 import dev.group1.services.UserService;
+import dev.group1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Set;
 
@@ -16,31 +20,45 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/user/users")
+    @Authorize
     // likely not necessary but following along with tutorial
-    public Set<User> retrieveAllUsers() {
+    public Set<User> retrieveAllUsers(User user){
         return this.userService.getAllUsers();
     }
 
 
     @PostMapping("/user/registration")
-    public User registerUser(@RequestBody User newUser) {
-        return this.userService.registerUser(newUser);
+    public String registerUser(@RequestBody User newUser){
+        User user = this.userService.registerUser(newUser);
+        if(user == null) {
+            throw new HttpClientErrorException(HttpStatus.CONFLICT, "User with username "+newUser.getUsername()+" already exists, must pick a new username");
+        }
+        return JwtUtil.generate(user);
     }
 
-    @GetMapping("/user/{userId}")
-    public User getUser(@PathVariable int userId) {
-        return this.userService.getUserByUserId(userId);
+    @GetMapping("/user")
+    @Authorize
+    public User getUser(User user){
+        return this.userService.getUserByUserId(user.getUserId());
     }
 
-    @PatchMapping("/user/{userId}/update")
-    public User getUser(@PathVariable int userId, @RequestBody User updatedUser) {
-        updatedUser.setUserId(userId);
+    @PatchMapping("/user")
+    @Authorize
+    public User getUser(User user, @RequestBody User updatedUser){
+        updatedUser.setUserId(user.getUserId());
         return this.userService.updateUser(updatedUser);
     }
 
-    @DeleteMapping("/user/{userId}")
-    public boolean deleteUser(@PathVariable int userId) {
-        return this.userService.deleteUserByUserId(userId);
+    @DeleteMapping("/user")
+    @Authorize
+    public boolean deleteUser(User user){
+        return this.userService.deleteUserByUserId(user.getUserId());
     }
 
+    @PostMapping("/user/login")
+    public String login(@RequestBody User loginAttempt) {
+        String check = this.userService.login(loginAttempt);
+        if(check == null) throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED, "Login Attempt failed, please try again");
+        return check;
+    }
 }

@@ -14,4 +14,5 @@ public interface UserService {
     User updateUser(User updatedUser);
 
     boolean deleteUserByUserId(int userId);
+    String login(User loginAttempt);
 }

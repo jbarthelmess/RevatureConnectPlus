@@ -4,9 +4,32 @@ plugins {
 	id 'java'
 }
 
+plugins {
+  id "org.sonarqube" version "3.1.1"
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectKey", "jbarthelmess_RevatureConnectPlus"
+    property "sonar.organization", "jbarthelmess"
+    property "sonar.host.url", "https://sonarcloud.io"
+  }
+}
+
 group = 'dev.group1'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'dev.group1.RevatureConnectPlus.RevatureConnectPlusApplication'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 repositories {
 	mavenCentral()
@@ -18,6 +41,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'com.auth0', name: 'java-jwt', version: '3.13.0'
+	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.4.3'
 }
 
 test {
