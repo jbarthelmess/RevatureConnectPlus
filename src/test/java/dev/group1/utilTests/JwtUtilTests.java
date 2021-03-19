@@ -25,6 +25,7 @@ class JwtUtilTests {
     @Order(2)
     void decoded_jwt() {
         DecodedJWT decodedJWT = JwtUtil.isValidJWT(jwt);
+        Assertions.assertNotNull(decodedJWT);
         Assertions.assertEquals(user.getUsername(),decodedJWT.getClaim("username").asString());
         Assertions.assertEquals(user.getUserId(), decodedJWT.getClaim("userId").asInt());
         Assertions.assertEquals(user.getDisplayName(), decodedJWT.getClaim("displayName").asString());

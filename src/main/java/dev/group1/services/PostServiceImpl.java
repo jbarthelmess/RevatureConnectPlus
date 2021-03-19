@@ -1,7 +1,7 @@
 package dev.group1.services;
 
+import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
-import dev.group1.entities.User;
 import dev.group1.repos.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -52,7 +51,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public boolean deletePost(int postId, User user) {
+    public boolean deletePost(int postId, UserDTO user) {
         Post toBeDeleted = this.postRepo.findById(postId).orElse(null);
         if(toBeDeleted == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Attempting to delete non-existent post");

@@ -1,7 +1,7 @@
 package dev.group1.services;
 
+import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
-import dev.group1.entities.User;
 
 import java.util.Set;
 
@@ -14,7 +14,7 @@ public interface PostService {
 
     Post updatePost(Post updatedPost);
 
-    boolean deletePost(int postId, User user);
+    boolean deletePost(int postId, UserDTO user);
 
     Set<Post> getFirst50Posts();
 
