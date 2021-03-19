@@ -41,12 +41,6 @@ public class PostController {
         return postService.registerPost(post);
     }
 
-    @PutMapping("/post/{id}")
-    @Authorize
-    public Post updatePost(UserDTO user, @PathVariable int id, @RequestBody Post post) {
-        return postService.updatePost(post);
-    }
-    
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @PostMapping("/post/{id}/like")
