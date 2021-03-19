@@ -1,5 +1,7 @@
 package dev.group1.controllers;
 
+import dev.group1.aspects.Authorize;
+import dev.group1.entities.Comment;
 import dev.group1.dtos.PostDTO;
 import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
@@ -7,7 +9,6 @@ import dev.group1.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import dev.group1.aspects.Authorize;
 
 import java.util.Set;
 
@@ -40,21 +41,41 @@ public class PostController {
         return postService.registerPost(post);
     }
 
+    @PutMapping("/post/{id}")
+    @Authorize
+    public Post updatePost(User user, @PathVariable int id, @RequestBody Post post) {
+        return postService.updatePost(post);
+    }
+
+    @DeleteMapping("/post/{id}")
+    @Authorize
+    public boolean deletePost(User user, @PathVariable int id) {
+        return postService.deletePost(id);
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @PostMapping("/post/{id}/like")
     @Authorize
     public boolean likePost(UserDTO user, @PathVariable int id) {
         return false;
     }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @PostMapping("/post/{id}/comment")
     @Authorize
-    public Object /*Comment*/ commentPost(UserDTO user, @PathVariable int id, @RequestBody Object /*Comment*/ comment) {
-        return null;
+    public Comment commentPost(UserDTO user, @PathVariable int id, @RequestBody Comment /*CommentDTO*/ commentDTO) {
+        Comment comment = new Comment();
+        comment.setUserId(user.getUserId());
+        comment.setCommentId(0);
+        comment.setPostId(id);
+        comment.setContentString(commentDTO.getContentString());
+        return comment;
     }
 
     @GetMapping("/post/{id}/comment")
     @Authorize
-    public Object /*Set<Comment>*/ postComments(UserDTO user, @PathVariable int id) {
+    public Set<Comment> postComments(UserDTO user, @PathVariable int id) {
         return null;
     }
 
