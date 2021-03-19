@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -26,8 +27,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostByPostId(int postId) {
-        return this.postRepo.findById(postId).get();
-
+        return this.postRepo.findById(postId).orElse(null);
     }
 
     @Override
