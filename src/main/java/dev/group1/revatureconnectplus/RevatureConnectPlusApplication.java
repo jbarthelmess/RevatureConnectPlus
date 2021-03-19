@@ -12,9 +12,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 public class RevatureConnectPlusApplication {
 
-	public static void main(String[] args) {
-		// auto creating application based on the info provided...
-		SpringApplication.run(RevatureConnectPlusApplication.class, args);
-	}
+    public static void main(String[] args) {
+        // auto creating application based on the info provided...
+        SpringApplication.run(RevatureConnectPlusApplication.class, args);
+    }
 
 }

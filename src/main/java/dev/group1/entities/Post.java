@@ -1,26 +1,27 @@
 package dev.group1.entities;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 
 @Entity
-@Table(name="post")
+@Table(name = "post")
 public class Post {
+
+    // like counter
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="post_id")
+    @Column(name = "post_id")
     private int postId;
 
-    @Column(name="user_id")
+    @Column(name = "user_id")
     @JoinColumn(name = "user_id")
     private int userId;
 
-    @Column(name="post_timestamp")
+    @Column(name = "post_timestamp")
     private long timestamp;
 
-    @Column(name="content_string")
+    @Column(name = "content_string")
     private String content;
 
     public Post() {

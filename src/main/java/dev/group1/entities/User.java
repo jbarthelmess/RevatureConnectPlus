@@ -3,21 +3,21 @@ package dev.group1.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name="plus_user")
+@Table(name = "plus_user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int userId;
 
-    @Column(name="username")
+    @Column(name = "username")
     private String username;
 
-    @Column(name="password_")
+    @Column(name = "password_")
     private String password;
 
-    @Column(name="display_name")
+    @Column(name = "display_name")
     private String displayName;
 
     public User() {
