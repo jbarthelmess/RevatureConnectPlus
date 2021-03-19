@@ -4,6 +4,7 @@ import dev.group1.entities.Post;
 import dev.group1.entities.User;
 import dev.group1.repos.PostRepo;
 import dev.group1.repos.UserRepo;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 @SpringBootTest
 @Transactional
-public class PostTest {
+class PostTest {
 
     @Autowired
     PostRepo postRepo;
@@ -37,7 +38,8 @@ public class PostTest {
     @Rollback
     void create_post() {
         Post post = new Post(0, user.getUserId(), System.currentTimeMillis() / 1000L, "The is a test content and should be rolledbacked!");
-        System.out.println(post);
+        postRepo.save(post);
+        Assertions.assertNotEquals(0, post.getPostId());
     }
 
     @Test
@@ -45,8 +47,12 @@ public class PostTest {
     void get_post_by_post_id() {
         Post post = new Post(0, user.getUserId(), System.currentTimeMillis() / 1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post);
-        Post newPost = postRepo.findById(post.getPostId()).get();
-        System.out.println(newPost);
+        Post newPost = postRepo.findById(post.getPostId()).orElse(null);
+        Assertions.assertNotNull(newPost);
+        Assertions.assertEquals(post.getPostId(), newPost.getPostId());
+        Assertions.assertEquals(post.getUserId(), newPost.getUserId());
+        Assertions.assertEquals(post.getContent(), newPost.getContent());
+        Assertions.assertEquals(post.getTimestamp(), newPost.getTimestamp());
     }
 
     @Test
@@ -62,7 +68,7 @@ public class PostTest {
         postRepo.save(post3);
 
         Set<Post> allPosts = new HashSet<>((Collection<? extends Post>) postRepo.findAll());
-        System.out.println(allPosts);
+        Assertions.assertNotEquals(0, allPosts.size());
     }
 
     @Test
@@ -70,9 +76,14 @@ public class PostTest {
     void update_post() {
         Post post = new Post(0, user.getUserId(), System.currentTimeMillis() / 1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post);
-        Post newPost = new Post(0, user.getUserId(), System.currentTimeMillis() / 1000L, "This content has been updated");
+        Post newPost = new Post(post.getPostId(), post.getUserId(), post.getTimestamp(), "This content has been updated");
         postRepo.save(newPost);
-        System.out.println(newPost);
+        Post updatedPost = postRepo.findById(post.getPostId()).orElse(null);
+        Assertions.assertNotNull(updatedPost);
+        Assertions.assertEquals(updatedPost.getPostId(), post.getPostId());
+        Assertions.assertEquals(updatedPost.getUserId(), post.getUserId());
+        Assertions.assertEquals(updatedPost.getContent(), post.getContent());
+        Assertions.assertEquals(updatedPost.getTimestamp(), post.getTimestamp());
     }
 
     @Test
@@ -80,18 +91,20 @@ public class PostTest {
     void delete_post_by_post_id() {
         Post post = new Post(0, user.getUserId(), System.currentTimeMillis() / 1000L, "The is a test content and should be rolledbacked!");
         postRepo.save(post);
+        int postId = post.getPostId();
         postRepo.deleteById(post.getPostId());
+        Assertions.assertFalse(postRepo.existsById(postId));
     }
 
     @Test
     void get_first_50_posts(){
-        Set<Post> top_posts = postRepo.findFirst50ByOrderByTimestamp();
-        System.out.println(top_posts);
+        Set<Post> topPosts = postRepo.findFirst50ByOrderByTimestamp();
+        Assertions.assertTrue(topPosts.size() <= 50);
     }
 
     @Test
     void find_next_50(){
-        Set<Post> top_posts = postRepo.findTop50ByTimestampAfter(1616075773L);
-        System.out.println(top_posts);
+        Set<Post> topPosts = postRepo.findTop50ByTimestampAfter(1616075773L);
+        Assertions.assertTrue(topPosts.size() <= 50);
     }
 }

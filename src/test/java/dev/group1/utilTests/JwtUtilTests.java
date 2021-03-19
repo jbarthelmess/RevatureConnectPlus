@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import dev.group1.utils.JwtUtil;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class JwtUtilTests {
+class JwtUtilTests {
     private static String jwt;
     private static User user;
 
@@ -18,13 +18,14 @@ public class JwtUtilTests {
         user.setDisplayName("Test User 1");
         user.setUsername("TEST_USER_1");
         jwt = JwtUtil.generate(user);
-        System.out.println(jwt);
+        Assertions.assertNotNull(jwt);
     }
 
     @Test
     @Order(2)
     void decoded_jwt() {
         DecodedJWT decodedJWT = JwtUtil.isValidJWT(jwt);
+        Assertions.assertNotNull(decodedJWT);
         Assertions.assertEquals(user.getUsername(),decodedJWT.getClaim("username").asString());
         Assertions.assertEquals(user.getUserId(), decodedJWT.getClaim("userId").asInt());
         Assertions.assertEquals(user.getDisplayName(), decodedJWT.getClaim("displayName").asString());

@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 
 @Transactional
 @SpringBootTest
-public class UserTest {
+class UserTest {
     @Autowired
     UserRepo repo;
 
@@ -25,6 +25,7 @@ public class UserTest {
     void create_user() {
         user = new User(0, "jbart", "password", "Josh Barthelmess");
         repo.save(user);
+        Assertions.assertNotEquals(0, user.getUserId());
     }
 
     @Test
@@ -34,7 +35,6 @@ public class UserTest {
         repo.save(user);
         user = new User(0, "jbart", "password", "Josh Barthelmess2");
         DataIntegrityViolationException e = Assertions.assertThrows(DataIntegrityViolationException.class, () -> repo.save(user));
-        System.out.println(e.getMessage());
     }
 
     @Test

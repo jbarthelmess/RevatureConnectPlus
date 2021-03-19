@@ -2,8 +2,9 @@ package dev.group1.controllers;
 
 import dev.group1.aspects.Authorize;
 import dev.group1.entities.Comment;
+import dev.group1.dtos.PostDTO;
+import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
-import dev.group1.entities.User;
 import dev.group1.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,17 +21,23 @@ public class PostController {
 
     @GetMapping("/post")
     @Authorize
-    public Set<Post> retrieveVisiblePosts(User user) {
+    public Set<Post> retrieveVisiblePosts(UserDTO user) {
         return postService.getFirst50Posts();
     }
 
     @GetMapping("/post/next/{timestamp}")
     @Authorize
-    public Set<Post> retrieveNextPosts(User user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
+    public Set<Post> retrieveNextPosts(UserDTO user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
 
     @PostMapping("/post")
     @Authorize
-    public Post createPost(User user, @RequestBody Post post) {
+    public Post createPost(UserDTO user, @RequestBody PostDTO postDTO) {
+        // Using DTO object to prevent bad data from being written to database
+        Post post = new Post();
+        post.setPostId(0);
+        post.setContent(postDTO.getContent());
+        post.setUserId(user.getUserId());
+
         return postService.registerPost(post);
     }
 
@@ -49,7 +56,7 @@ public class PostController {
 
     @PostMapping("/post/{id}/like")
     @Authorize
-    public boolean likePost(User user, @PathVariable int id) {
+    public boolean likePost(UserDTO user, @PathVariable int id) {
         return false;
     }
 
@@ -57,7 +64,7 @@ public class PostController {
 
     @PostMapping("/post/{id}/comment")
     @Authorize
-    public Comment commentPost(User user, @PathVariable int id, @RequestBody Comment /*CommentDTO*/ commentDTO) {
+    public Comment commentPost(UserDTO user, @PathVariable int id, @RequestBody Comment /*CommentDTO*/ commentDTO) {
         Comment comment = new Comment();
         comment.setUserId(user.getUserId());
         comment.setCommentId(0);
@@ -68,9 +75,23 @@ public class PostController {
 
     @GetMapping("/post/{id}/comment")
     @Authorize
-    public Set<Comment> postComments(User user, @PathVariable int id) {
-
+    public Set<Comment> postComments(UserDTO user, @PathVariable int id) {
         return null;
     }
 
+    @PutMapping("/post/{id}")
+    @Authorize
+    public Post updatePost(UserDTO user, @PathVariable int id, @RequestBody PostDTO postDTO) {
+        Post post = new Post();
+        post.setPostId(postDTO.getPostId());
+        post.setContent(postDTO.getContent());
+        post.setUserId(user.getUserId());
+        return postService.updatePost(post);
+    }
+
+    @DeleteMapping("/post/{id}")
+    @Authorize
+    public boolean deletePost(UserDTO user, @PathVariable int id) {
+        return postService.deletePost(id, user);
+    }
 }
