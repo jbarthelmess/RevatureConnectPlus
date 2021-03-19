@@ -9,7 +9,7 @@ import dev.group1.entities.User;
 public class JwtUtil {
     private static final String SECRET = System.getenv("JWT");
     private static final Algorithm ALGO = Algorithm.HMAC512(SECRET);
-    private JwtUtil() {}
+    private JwtUtil() {/* added blank private constructor to prevent instantiation of Util class*/}
     public static String generate(User user) {
         return JWT.create().withClaim("userId",user.getUserId()).withClaim("username", user.getUsername()).withClaim("displayName", user.getDisplayName()).sign(ALGO);
     }
