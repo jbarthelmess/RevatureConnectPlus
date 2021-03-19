@@ -1,6 +1,7 @@
 package dev.group1.aspects;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import dev.group1.dtos.UserDTO;
 import dev.group1.entities.User;
 import dev.group1.utils.JwtUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -35,7 +36,7 @@ public class SecurityAspect {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT provided. Please log in.");
         } else {
             // will want to pass a user object to most function calls for info
-            User user = new User();
+            UserDTO user = new UserDTO();
             user.setUserId(decodedJWT.getClaim("userId").asInt());
             user.setUsername(decodedJWT.getClaim("username").asString());
             user.setDisplayName(decodedJWT.getClaim("displayName").asString());

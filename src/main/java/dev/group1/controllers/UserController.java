@@ -23,7 +23,7 @@ public class UserController {
     @GetMapping("/user/users")
     @Authorize
     // likely not necessary but following along with tutorial
-    public Set<User> retrieveAllUsers(User user){
+    public Set<User> retrieveAllUsers(UserDTO user){
         return this.userService.getAllUsers();
     }
 
@@ -46,13 +46,13 @@ public class UserController {
 
     @GetMapping("/user")
     @Authorize
-    public User getUser(User user){
+    public User getUser(UserDTO user){
         return this.userService.getUserByUserId(user.getUserId());
     }
 
     @PatchMapping("/user")
     @Authorize
-    public User updateUser(User user, @RequestBody UserDTO updatedUser){
+    public User updateUser(UserDTO user, @RequestBody UserDTO updatedUser){
         // using DTO object to guarantee that bad data won't get written to the database
         User update = new User();
         update.setUserId(user.getUserId());
@@ -67,7 +67,7 @@ public class UserController {
 
     @DeleteMapping("/user")
     @Authorize
-    public boolean deleteUser(User user){
+    public boolean deleteUser(UserDTO user){
         return this.userService.deleteUserByUserId(user.getUserId());
     }
 

@@ -1,6 +1,7 @@
 package dev.group1.controllers;
 
 import dev.group1.dtos.PostDTO;
+import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
 import dev.group1.entities.User;
 import dev.group1.services.PostService;
@@ -20,17 +21,17 @@ public class PostController {
 
     @GetMapping("/post")
     @Authorize
-    public Set<Post> retrieveVisiblePosts(User user) {
+    public Set<Post> retrieveVisiblePosts(UserDTO user) {
         return postService.getFirst50Posts();
     }
 
     @GetMapping("/post/next/{timestamp}")
     @Authorize
-    public Set<Post> retrieveNextPosts(User user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
+    public Set<Post> retrieveNextPosts(UserDTO user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
 
     @PostMapping("/post")
     @Authorize
-    public Post createPost(User user, @RequestBody PostDTO postDTO) {
+    public Post createPost(UserDTO user, @RequestBody PostDTO postDTO) {
         // Using DTO object to prevent bad data from being written to database
         Post post = new Post();
         post.setPostId(0);
@@ -42,25 +43,25 @@ public class PostController {
 
     @PostMapping("/post/{id}/like")
     @Authorize
-    public boolean likePost(User user, @PathVariable int id) {
+    public boolean likePost(UserDTO user, @PathVariable int id) {
         return false;
     }
 
     @PostMapping("/post/{id}/comment")
     @Authorize
-    public Object /*Comment*/ commentPost(User user, @PathVariable int id, @RequestBody Object /*Comment*/ comment) {
+    public Object /*Comment*/ commentPost(UserDTO user, @PathVariable int id, @RequestBody Object /*Comment*/ comment) {
         return null;
     }
 
     @GetMapping("/post/{id}/comment")
     @Authorize
-    public Object /*Set<Comment>*/ postComments(User user, @PathVariable int id) {
+    public Object /*Set<Comment>*/ postComments(UserDTO user, @PathVariable int id) {
         return null;
     }
 
     @PutMapping("/post/{id}")
     @Authorize
-    public Post updatePost(User user, @PathVariable int id, @RequestBody PostDTO postDTO) {
+    public Post updatePost(UserDTO user, @PathVariable int id, @RequestBody PostDTO postDTO) {
         Post post = new Post();
         post.setPostId(postDTO.getPostId());
         post.setContent(postDTO.getContent());
@@ -70,7 +71,7 @@ public class PostController {
 
     @DeleteMapping("/post/{id}")
     @Authorize
-    public boolean deletePost(User user, @PathVariable int id) {
+    public boolean deletePost(UserDTO user, @PathVariable int id) {
         return postService.deletePost(id, user);
     }
 }
