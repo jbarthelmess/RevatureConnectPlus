@@ -2,7 +2,6 @@ package dev.group1.services;
 
 import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
-//import dev.group1.entities.User;
 import dev.group1.repos.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

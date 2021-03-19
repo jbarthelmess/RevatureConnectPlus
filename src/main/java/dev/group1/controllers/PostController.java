@@ -3,7 +3,6 @@ package dev.group1.controllers;
 import dev.group1.dtos.PostDTO;
 import dev.group1.dtos.UserDTO;
 import dev.group1.entities.Post;
-import dev.group1.entities.User;
 import dev.group1.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

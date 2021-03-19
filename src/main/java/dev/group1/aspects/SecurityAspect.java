@@ -2,7 +2,6 @@ package dev.group1.aspects;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.group1.dtos.UserDTO;
-import dev.group1.entities.User;
 import dev.group1.utils.JwtUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
