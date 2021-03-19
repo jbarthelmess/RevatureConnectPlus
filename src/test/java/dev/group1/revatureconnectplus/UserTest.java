@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 
 @Transactional
 @SpringBootTest
-public class UserTest {
+class UserTest {
     @Autowired
     UserRepo repo;
 

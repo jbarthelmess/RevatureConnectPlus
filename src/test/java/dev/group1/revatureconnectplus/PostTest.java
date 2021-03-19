@@ -17,7 +17,7 @@ import java.util.Set;
 
 @SpringBootTest
 @Transactional
-public class PostTest {
+class PostTest {
 
     @Autowired
     PostRepo postRepo;

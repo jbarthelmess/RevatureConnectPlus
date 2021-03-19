@@ -27,13 +27,11 @@ public class SecurityAspect {
         String jwt = request.getHeader("Authorization");
         if(jwt == null){
             // add logging later
-            System.out.println("Responding with an error for no JWT");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No JWT provided. Please log in");
         }
         DecodedJWT decodedJWT = JwtUtil.isValidJWT(jwt);
         if(decodedJWT == null) {
             // add logging later
-            System.out.println("Responding with an error for Invalid JWT");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT provided. Please log in.");
         } else {
             // will want to pass a user object to most function calls for info
