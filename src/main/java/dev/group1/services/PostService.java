@@ -1,6 +1,7 @@
 package dev.group1.services;
 
 import dev.group1.entities.Post;
+import dev.group1.entities.User;
 
 import java.util.Set;
 
@@ -13,7 +14,7 @@ public interface PostService {
 
     Post updatePost(Post updatedPost);
 
-    boolean deletePost(int postId);
+    boolean deletePost(int postId, User user);
 
     Set<Post> getFirst50Posts();
 

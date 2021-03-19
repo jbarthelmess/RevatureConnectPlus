@@ -1,5 +1,6 @@
 package dev.group1.controllers;
 
+import dev.group1.dtos.PostDTO;
 import dev.group1.entities.Post;
 import dev.group1.entities.User;
 import dev.group1.services.PostService;
@@ -29,7 +30,13 @@ public class PostController {
 
     @PostMapping("/post")
     @Authorize
-    public Post createPost(User user, @RequestBody Post post) {
+    public Post createPost(User user, @RequestBody PostDTO postDTO) {
+        // Using DTO object to prevent bad data from being written to database
+        Post post = new Post();
+        post.setPostId(0);
+        post.setContent(postDTO.getContent());
+        post.setUserId(user.getUserId());
+
         return postService.registerPost(post);
     }
 
@@ -53,13 +60,17 @@ public class PostController {
 
     @PutMapping("/post/{id}")
     @Authorize
-    public Post updatePost(User user, @PathVariable int id, @RequestBody Post post) {
+    public Post updatePost(User user, @PathVariable int id, @RequestBody PostDTO postDTO) {
+        Post post = new Post();
+        post.setPostId(postDTO.getPostId());
+        post.setContent(postDTO.getContent());
+        post.setUserId(user.getUserId());
         return postService.updatePost(post);
     }
 
     @DeleteMapping("/post/{id}")
     @Authorize
     public boolean deletePost(User user, @PathVariable int id) {
-        return postService.deletePost(id);
+        return postService.deletePost(id, user);
     }
 }

@@ -1,6 +1,7 @@
 package dev.group1.controllers;
 
 import dev.group1.aspects.Authorize;
+import dev.group1.dtos.UserDTO;
 import dev.group1.entities.User;
 import dev.group1.services.UserService;
 import dev.group1.utils.JwtUtil;
@@ -28,8 +29,15 @@ public class UserController {
 
 
     @PostMapping("/user/registration")
-    public String registerUser(@RequestBody User newUser){
-        User user = this.userService.registerUser(newUser);
+    public String registerUser(@RequestBody UserDTO newUser){
+        // Using DTO object to guarantee that existing users won't be accidentally overwritten
+        User userCheck = new User();
+        userCheck.setUserId(0);
+        userCheck.setUsername(newUser.getUsername());
+        userCheck.setPassword(newUser.getPassword());
+        userCheck.setDisplayName(newUser.getDisplayName());
+
+        User user = this.userService.registerUser(userCheck);
         if(user == null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration attempt failed, please choose a different username");
         }
@@ -44,9 +52,17 @@ public class UserController {
 
     @PatchMapping("/user")
     @Authorize
-    public User getUser(User user, @RequestBody User updatedUser){
-        updatedUser.setUserId(user.getUserId());
-        return this.userService.updateUser(updatedUser);
+    public User updateUser(User user, @RequestBody UserDTO updatedUser){
+        // using DTO object to guarantee that bad data won't get written to the database
+        User update = new User();
+        update.setUserId(user.getUserId());
+        update.setUsername(user.getUsername());
+
+        // can only update password, or display name
+        update.setPassword(updatedUser.getPassword());
+        update.setDisplayName(updatedUser.getDisplayName());
+
+        return this.userService.updateUser(update);
     }
 
     @DeleteMapping("/user")
@@ -56,8 +72,17 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String login(@RequestBody User loginAttempt) {
-        String check = this.userService.login(loginAttempt);
+    public String login(@RequestBody UserDTO loginAttempt) {
+        // using DTO object to guarantee bad data won't get written to the database
+        User attempt = new User();
+        attempt.setUserId(0);
+        attempt.setDisplayName(null);
+
+        // must search by username and password only
+        attempt.setUsername(loginAttempt.getUsername());
+        attempt.setPassword(loginAttempt.getPassword());
+
+        String check = this.userService.login(attempt);
         if(check == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login Attempt failed, please try again");
         }

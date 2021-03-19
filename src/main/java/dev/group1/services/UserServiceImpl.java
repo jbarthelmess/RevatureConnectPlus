@@ -30,13 +30,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUserId(int userId) {
-        return this.userRepo.findById(userId).get();
+        return this.userRepo.findById(userId).orElse(null);
     }
 
     @Override
     public Set<User> getAllUsers() {
-        Set<User> users = new HashSet<User>((Collection<? extends User>) this.userRepo.findAll());
-        return users;
+        return new HashSet<>((Collection<? extends User>) this.userRepo.findAll());
     }
 
     @Override
