@@ -17,42 +17,48 @@ public class PostController {
     PostService postService;
 
     @GetMapping("/post")
-    public Set<Post> retrieveVisiblePosts() {
+    @Authorize
+    public Set<Post> retrieveVisiblePosts(User user) {
         return postService.getFirst50Posts();
     }
 
     @GetMapping("/post/next/{timestamp}")
-    public Set<Post> retrieveNextPosts(@PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
+    @Authorize
+    public Set<Post> retrieveNextPosts(User user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
 
     @PostMapping("/post")
-    public Post createPost(@RequestBody Post post) {
+    @Authorize
+    public Post createPost(User user, @RequestBody Post post) {
         return postService.registerPost(post);
     }
 
     @PostMapping("/post/{id}/like")
-    // user info sent in  jwt
-    // @Authorize // on top of everything
+    @Authorize
     public boolean likePost(User user, @PathVariable int id) {
         return false;
     }
 
     @PostMapping("/post/{id}/comment")
-    public Object /*Comment*/ commentPost(@PathVariable int id, @RequestBody Object /*Comment*/ comment) {
+    @Authorize
+    public Object /*Comment*/ commentPost(User user, @PathVariable int id, @RequestBody Object /*Comment*/ comment) {
         return null;
     }
 
     @GetMapping("/post/{id}/comment")
-    public Object /*Set<Comment>*/ postComments(@PathVariable int id) {
+    @Authorize
+    public Object /*Set<Comment>*/ postComments(User user, @PathVariable int id) {
         return null;
     }
 
     @PutMapping("/post/{id}")
-    public Post updatePost(@PathVariable int id, @RequestBody Post post) {
+    @Authorize
+    public Post updatePost(User user, @PathVariable int id, @RequestBody Post post) {
         return postService.updatePost(post);
     }
 
     @DeleteMapping("/post/{id}")
-    public boolean deletePost(@PathVariable int id) {
+    @Authorize
+    public boolean deletePost(User user, @PathVariable int id) {
         return postService.deletePost(id);
     }
 }
