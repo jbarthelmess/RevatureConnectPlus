@@ -1,12 +1,13 @@
 package dev.group1.controllers;
 
+import dev.group1.aspects.Authorize;
+import dev.group1.entities.Comment;
 import dev.group1.entities.Post;
 import dev.group1.entities.User;
 import dev.group1.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import dev.group1.aspects.Authorize;
 
 import java.util.Set;
 
@@ -41,13 +42,13 @@ public class PostController {
 
     @PostMapping("/post/{id}/comment")
     @Authorize
-    public Object /*Comment*/ commentPost(User user, @PathVariable int id, @RequestBody Object /*Comment*/ comment) {
+    public Comment commentPost(User user, @PathVariable int id, @RequestBody Comment comment) {
         return null;
     }
 
     @GetMapping("/post/{id}/comment")
     @Authorize
-    public Object /*Set<Comment>*/ postComments(User user, @PathVariable int id) {
+    public Set<Comment> postComments(User user, @PathVariable int id) {
         return null;
     }
 
