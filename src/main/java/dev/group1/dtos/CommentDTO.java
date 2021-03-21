@@ -1,8 +1,5 @@
 package dev.group1.dtos;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-
 public class CommentDTO {
 
     private int commentId;

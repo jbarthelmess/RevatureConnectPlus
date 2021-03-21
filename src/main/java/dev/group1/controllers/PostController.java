@@ -66,7 +66,7 @@ public class PostController {
     public Comment commentPost(UserDTO user, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
         Post post = postService.getPostByPostId(id);
         if(post == null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This post does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This post does not exist");
         }
 
         Comment comment = new Comment();
@@ -83,12 +83,12 @@ public class PostController {
     public Set<Comment> postComments(UserDTO user, @PathVariable int id) {
         User userExist = userService.getUserByUserId(user.getUserId());
         if(userExist == null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This user is not valid");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This user is not valid");
         }
 
         Post post = postService.getPostByPostId(id);
         if(post == null){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "This post doesn't exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This post doesn't exist");
         }
         return commentService.getAllCommentsByPostId(id);
     }
