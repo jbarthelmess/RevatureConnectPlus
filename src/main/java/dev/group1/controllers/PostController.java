@@ -10,6 +10,7 @@ import dev.group1.entities.User;
 import dev.group1.services.CommentService;
 import dev.group1.services.PostService;
 import dev.group1.services.UserService;
+import dev.group1.services.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,8 @@ public class PostController {
     CommentService commentService;
     @Autowired
     UserService userService;
+    @Autowired
+    LikeService likeService;
 
     @GetMapping("/post")
     @Authorize
@@ -56,7 +59,7 @@ public class PostController {
     @PostMapping("/post/{id}/like")
     @Authorize
     public boolean likePost(UserDTO user, @PathVariable int id) {
-        return false;
+        return this.likeService.likePost(user.getUserId(), id);
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
