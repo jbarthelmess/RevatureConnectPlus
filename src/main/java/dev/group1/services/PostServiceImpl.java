@@ -46,6 +46,7 @@ public class PostServiceImpl implements PostService {
         if(oldPost.getUserId() != updatedPost.getUserId()) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Attempting to update a post that is not yours");
         }
+        updatedPost.setTimestamp(oldPost.getTimestamp());
         this.postRepo.save(updatedPost);
         return updatedPost;
     }

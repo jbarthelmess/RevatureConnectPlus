@@ -107,4 +107,10 @@ class PostTest {
         Set<Post> topPosts = postRepo.findTop50ByTimestampAfter(1616075773L);
         Assertions.assertTrue(topPosts.size() <= 50);
     }
+
+    @Test
+    void like_count() {
+        Set<Post> posts = new HashSet<>((Collection<? extends Post>) postRepo.findAll());
+        System.out.println(posts);
+    }
 }

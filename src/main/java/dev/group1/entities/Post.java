@@ -1,6 +1,9 @@
 package dev.group1.entities;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
+import java.util.Set;
 
 
 @Entity
@@ -23,6 +26,9 @@ public class Post {
 
     @Column(name = "content_string")
     private String content;
+
+    @Formula("(select count(*) from like_ where like_.post_id = post0_.post_id)")
+    private int likeCount;
 
     public Post() {
     }
@@ -66,6 +72,14 @@ public class Post {
         this.content = content;
     }
 
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -73,6 +87,7 @@ public class Post {
                 ", userId=" + userId +
                 ", timestamp=" + timestamp +
                 ", content='" + content + '\'' +
+                ", likeCount=" + likeCount +
                 '}';
     }
 }

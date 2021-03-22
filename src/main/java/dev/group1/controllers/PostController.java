@@ -74,8 +74,7 @@ public class PostController {
         comment.setCommentId(0);
         comment.setPostId(id);
         comment.setContentString(commentDTO.getContentString());
-        commentService.registerComment(comment);
-        return comment;
+        return commentService.registerComment(comment);
     }
 
     @GetMapping("/post/{id}/comment")
@@ -91,6 +90,23 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This post doesn't exist");
         }
         return commentService.getAllCommentsByPostId(id);
+    }
+
+    @PutMapping("/post/{id}/comment/{commentId}")
+    @Authorize
+    public Comment updateComment(UserDTO user, @PathVariable int id, @PathVariable int commentId, @RequestBody CommentDTO update) {
+        Comment comment = new Comment();
+        comment.setUserId(user.getUserId());
+        comment.setPostId(id);
+        comment.setCommentId(commentId);
+        comment.setContentString(update.getContentString());
+        return this.commentService.updateComment(comment);
+    }
+
+    @DeleteMapping("/post/{id}/comment/{commentId}")
+    @Authorize
+    public boolean deleteComment(UserDTO user, @PathVariable int id, @PathVariable int commentId) {
+        return this.commentService.deleteComment(commentId, user.getUserId());
     }
 
     @PutMapping("/post/{id}")
