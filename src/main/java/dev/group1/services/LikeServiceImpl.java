@@ -4,7 +4,11 @@ import dev.group1.entities.Like;
 import dev.group1.entities.LikeKey;
 import dev.group1.repos.LikeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
+@Service
 public class LikeServiceImpl implements LikeService{
     @Autowired
     LikeRepo likeRepo;
