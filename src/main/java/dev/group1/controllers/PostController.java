@@ -46,11 +46,16 @@ public class PostController {
     @Authorize
     public Post createPost(UserDTO user, @RequestBody PostDTO postDTO) {
         // Using DTO object to prevent bad data from being written to database
+        if(postDTO == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
+        }
+        if(postDTO.getContent() == null || postDTO.getContent().equals("")) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "No content given for Post");
+        }
         Post post = new Post();
         post.setPostId(0);
         post.setContent(postDTO.getContent());
         post.setUserId(user.getUserId());
-
         return postService.registerPost(post);
     }
 
@@ -58,8 +63,8 @@ public class PostController {
 
     @PostMapping("/post/{id}/like")
     @Authorize
-    public boolean likePost(UserDTO user, @PathVariable int id) {
-        return this.likeService.likePost(user.getUserId(), id);
+    public String likePost(UserDTO user, @PathVariable int id) {
+        return "{\"liked\":\""+this.likeService.likePost(user.getUserId(), id)+"\"}";
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,11 +72,16 @@ public class PostController {
     @PostMapping("/post/{id}/comment")
     @Authorize
     public Comment commentPost(UserDTO user, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
+        if(commentDTO == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
+        }
+        if(commentDTO.getContentString() == null || commentDTO.getContentString().equals("")) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "No content given for comment");
+        }
         Post post = postService.getPostByPostId(id);
         if(post == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This post does not exist");
         }
-
         Comment comment = new Comment();
         comment.setUserId(user.getUserId());
         comment.setCommentId(0);
@@ -98,6 +108,12 @@ public class PostController {
     @PutMapping("/post/{id}/comment/{commentId}")
     @Authorize
     public Comment updateComment(UserDTO user, @PathVariable int id, @PathVariable int commentId, @RequestBody CommentDTO update) {
+        if(update == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
+        }
+        if(update.getContentString() == null || update.getContentString().equals("")) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "No new content given for comment");
+        }
         Comment comment = new Comment();
         comment.setUserId(user.getUserId());
         comment.setPostId(id);
@@ -108,15 +124,21 @@ public class PostController {
 
     @DeleteMapping("/post/{id}/comment/{commentId}")
     @Authorize
-    public boolean deleteComment(UserDTO user, @PathVariable int id, @PathVariable int commentId) {
-        return this.commentService.deleteComment(commentId, user.getUserId());
+    public String deleteComment(UserDTO user, @PathVariable int id, @PathVariable int commentId) {
+        return "{\"deleted\":"+this.commentService.deleteComment(commentId, user.getUserId())+"}";
     }
 
     @PutMapping("/post/{id}")
     @Authorize
     public Post updatePost(UserDTO user, @PathVariable int id, @RequestBody PostDTO postDTO) {
+        if(postDTO == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
+        }
+        if(postDTO.getContent() == null || postDTO.getContent().equals("")) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "No new content given for Post");
+        }
         Post post = new Post();
-        post.setPostId(postDTO.getPostId());
+        post.setPostId(id);
         post.setContent(postDTO.getContent());
         post.setUserId(user.getUserId());
         return postService.updatePost(post);
@@ -124,7 +146,7 @@ public class PostController {
 
     @DeleteMapping("/post/{id}")
     @Authorize
-    public boolean deletePost(UserDTO user, @PathVariable int id) {
-        return postService.deletePost(id, user);
+    public String deletePost(UserDTO user, @PathVariable int id) {
+        return "{\"deleted\":"+postService.deletePost(id, user)+"}";
     }
 }

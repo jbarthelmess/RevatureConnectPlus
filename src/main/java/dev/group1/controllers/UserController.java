@@ -11,48 +11,40 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Set;
-
 @Component
 @RestController
 public class UserController {
-
     @Autowired
     UserService userService;
-
-    @GetMapping("/user/users")
-    @Authorize
-    // likely not necessary but following along with tutorial
-    public Set<User> retrieveAllUsers(UserDTO user){
-        return this.userService.getAllUsers();
-    }
-
 
     @PostMapping("/user/registration")
     public String registerUser(@RequestBody UserDTO newUser){
         // Using DTO object to guarantee that existing users won't be accidentally overwritten
+        if(newUser == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given for request");
+        }
+        if(newUser.getUsername() == null || newUser.getUsername().equals("") || newUser.getPassword() == null || newUser.getPassword().equals("")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username and Passowrd must be valid strings");
+        }
         User userCheck = new User();
         userCheck.setUserId(0);
         userCheck.setUsername(newUser.getUsername());
         userCheck.setPassword(newUser.getPassword());
         userCheck.setDisplayName(newUser.getDisplayName());
+        if(newUser.getDisplayName() == null || newUser.getDisplayName().equals("")) {
+            userCheck.setDisplayName(newUser.getUsername());
+        }
 
         User user = this.userService.registerUser(userCheck);
         if(user == null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration attempt failed, please choose a different username");
         }
-        return JwtUtil.generate(user);
-    }
-
-    @GetMapping("/user")
-    @Authorize
-    public User getUser(UserDTO user){
-        return this.userService.getUserByUserId(user.getUserId());
+        return "{\"jwt\":\""+JwtUtil.generate(user)+"\"}";
     }
 
     @PatchMapping("/user")
     @Authorize
-    public User updateUser(UserDTO user, @RequestBody UserDTO updatedUser){
+    public String updateUser(UserDTO user, @RequestBody UserDTO updatedUser){
         // using DTO object to guarantee that bad data won't get written to the database
         User update = new User();
         update.setUserId(user.getUserId());
@@ -61,14 +53,20 @@ public class UserController {
         // can only update password, or display name
         update.setPassword(updatedUser.getPassword());
         update.setDisplayName(updatedUser.getDisplayName());
+        if(updatedUser.getDisplayName() == null || updatedUser.getDisplayName().equals("")) {
+            update.setDisplayName(user.getDisplayName());
+        }
+        if(updatedUser.getPassword() == null || updatedUser.getPassword().equals("")) { // I'm worried about this
+            update.setPassword(null);
+        }
 
-        return this.userService.updateUser(update);
+        return "{\"jwt\":\""+ JwtUtil.generate(this.userService.updateUser(update))+"\"}";
     }
 
     @DeleteMapping("/user")
     @Authorize
-    public boolean deleteUser(UserDTO user){
-        return this.userService.deleteUserByUserId(user.getUserId());
+    public String deleteUser(UserDTO user){
+        return "{\"jwt\":"+this.userService.deleteUserByUserId(user.getUserId())+"}";
     }
 
     @PostMapping("/user/login")
@@ -78,6 +76,9 @@ public class UserController {
         attempt.setUserId(0);
         attempt.setDisplayName(null);
 
+        if(loginAttempt.getUsername() == null || loginAttempt.getUsername().equals("") || loginAttempt.getPassword() == null || loginAttempt.getPassword().equals("")){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Must provide a valid username and password to log in");
+        }
         // must search by username and password only
         attempt.setUsername(loginAttempt.getUsername());
         attempt.setPassword(loginAttempt.getPassword());
@@ -86,6 +87,6 @@ public class UserController {
         if(check == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login Attempt failed, please try again");
         }
-        return check;
+        return "{\"jwt\":\""+check+"\"}";
     }
 }

@@ -29,7 +29,11 @@ public class SecurityAspect {
             // add logging later
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "No JWT provided. Please log in");
         }
-        DecodedJWT decodedJWT = JwtUtil.isValidJWT(jwt);
+        String clean = jwt;
+        if(jwt.contains("Bearer ")) {
+            clean = jwt.substring(7);
+        }
+        DecodedJWT decodedJWT = JwtUtil.isValidJWT(clean);
         if(decodedJWT == null) {
             // add logging later
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid JWT provided. Please log in.");
