@@ -16,8 +16,6 @@
 
 ## Endpoints
 #### User Endpoints
-`GET /user` <-- get user account info
-
 `POST /user/registration` <-- create new user account
 
 `POST /user/login` <-- login
@@ -25,22 +23,21 @@
 `DELETE /user` <-- delete user account
 
 `PATCH /user` <-- update user info
-
 #### POST ENDPOINTS
 `GET /post` <-- get visible posts
 
 `POST /post` <-- create new post
 
-`POST /post/{id}/like` <-- like a post {id}
+`POST /post/{id}/like` <-- like/unlike a post {id}
 
 `POST /post/{id}/comment` <-- comment on a post {id}
 
 `GET /post/{id}/comment` <-- view comments on post {id}
 
-`PATCH /post/{id}` <-- update a post {id}
+`PUT /post/{id}` <-- update a post {id}
+
+`PUT /post/{id}/comment/{commentId}` <-- update a comment {id}
 
 `DELETE /post/{id}` <-- delete post {id}
 
 `DELETE /post/{id}/comment/{commentId}` <-- delete a comment on post {id} with {comment_id}
-
-`DELETE /post/{id}/like` <-- unlike post {id}
