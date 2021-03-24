@@ -50,14 +50,11 @@ public class UserController {
         update.setUserId(user.getUserId());
         update.setUsername(user.getUsername());
 
-        // can only update password, or display name
+        // can only update display name, password will get set in service
         update.setPassword(updatedUser.getPassword());
         update.setDisplayName(updatedUser.getDisplayName());
         if(updatedUser.getDisplayName() == null || updatedUser.getDisplayName().equals("")) {
             update.setDisplayName(user.getDisplayName());
-        }
-        if(updatedUser.getPassword() == null || updatedUser.getPassword().equals("")) { // I'm worried about this
-            update.setPassword(null);
         }
 
         return "{\"jwt\":\""+ JwtUtil.generate(this.userService.updateUser(update))+"\"}";

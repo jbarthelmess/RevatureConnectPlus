@@ -4,8 +4,10 @@ import dev.group1.entities.User;
 import dev.group1.repos.UserRepo;
 import dev.group1.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,6 +42,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(User updatedUser) {
+        User user = this.userRepo.findById(updatedUser.getUserId()).orElse(null);
+        if(user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Attempting to update a user that doesn't exist");
+        }
+        updatedUser.setPassword(user.getPassword()); // cannot change password for now
         this.userRepo.save(updatedUser);
         return updatedUser;
     }
