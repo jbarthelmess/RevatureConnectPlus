@@ -1,5 +1,6 @@
 package dev.group1.controllers;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.group1.aspects.Authorize;
 import dev.group1.dtos.UserDTO;
 import dev.group1.entities.User;
@@ -18,7 +19,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/user/registration")
-    public String registerUser(@RequestBody UserDTO newUser){
+    public User registerUser(@RequestBody UserDTO newUser){
         // Using DTO object to guarantee that existing users won't be accidentally overwritten
         if(newUser == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given for request");
@@ -39,12 +40,13 @@ public class UserController {
         if(user == null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration attempt failed, please choose a different username");
         }
-        return "{\"jwt\":\""+JwtUtil.generate(user)+"\"}";
+        user.setPassword(JwtUtil.generate(user));
+        return user;
     }
 
     @PatchMapping("/user")
     @Authorize
-    public String updateUser(UserDTO user, @RequestBody UserDTO updatedUser){
+    public User updateUser(UserDTO user, @RequestBody UserDTO updatedUser){
         // using DTO object to guarantee that bad data won't get written to the database
         User update = new User();
         update.setUserId(user.getUserId());
@@ -56,8 +58,9 @@ public class UserController {
         if(updatedUser.getDisplayName() == null || updatedUser.getDisplayName().equals("")) {
             update.setDisplayName(user.getDisplayName());
         }
-
-        return "{\"jwt\":\""+ JwtUtil.generate(this.userService.updateUser(update))+"\"}";
+        User finished = this.userService.updateUser(update);
+        finished.setPassword(JwtUtil.generate(finished));
+        return finished;
     }
 
     @DeleteMapping("/user")
@@ -67,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String login(@RequestBody UserDTO loginAttempt) {
+    public User login(@RequestBody UserDTO loginAttempt) {
         // using DTO object to guarantee bad data won't get written to the database
         User attempt = new User();
         attempt.setUserId(0);
@@ -84,6 +87,12 @@ public class UserController {
         if(check == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login Attempt failed, please try again");
         }
-        return "{\"jwt\":\""+check+"\"}";
+        DecodedJWT user = JwtUtil.isValidJWT(check);
+        User ret = new User();
+        ret.setUserId(user.getClaim("userId").asInt());
+        ret.setUsername(user.getClaim("username").asString());
+        ret.setDisplayName(user.getClaim("displayName").asString());
+        ret.setPassword(check);
+        return ret;
     }
 }
