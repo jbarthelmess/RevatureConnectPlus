@@ -33,6 +33,7 @@ public class PostController {
     @Autowired
     LikeService likeService;
 
+    @CrossOrigin
     @GetMapping("/post")
     @Authorize
     @LogErrors
@@ -40,11 +41,13 @@ public class PostController {
         return postService.getFirst50Posts();
     }
 
+    @CrossOrigin
     @GetMapping("/post/next/{timestamp}")
     @Authorize
     @LogErrors
     public Set<Post> retrieveNextPosts(UserDTO user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
 
+    @CrossOrigin
     @PostMapping("/post")
     @Authorize
     @LogErrors
@@ -65,6 +68,7 @@ public class PostController {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    @CrossOrigin
     @PostMapping("/post/{id}/like")
     @Authorize
     @LogErrors
@@ -74,6 +78,7 @@ public class PostController {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    @CrossOrigin
     @PostMapping("/post/{id}/comment")
     @Authorize
     @LogErrors
@@ -96,6 +101,7 @@ public class PostController {
         return commentService.registerComment(comment);
     }
 
+    @CrossOrigin
     @GetMapping("/post/{id}/comment")
     @Authorize
     @LogErrors
@@ -112,6 +118,7 @@ public class PostController {
         return commentService.getAllCommentsByPostId(id);
     }
 
+    @CrossOrigin
     @PutMapping("/post/{id}/comment/{commentId}")
     @Authorize
     @LogErrors
@@ -130,6 +137,7 @@ public class PostController {
         return this.commentService.updateComment(comment);
     }
 
+    @CrossOrigin
     @DeleteMapping("/post/{id}/comment/{commentId}")
     @Authorize
     @LogErrors
@@ -137,6 +145,7 @@ public class PostController {
         return "{\"deleted\":"+this.commentService.deleteComment(commentId, user.getUserId())+"}";
     }
 
+    @CrossOrigin
     @PutMapping("/post/{id}")
     @Authorize
     @LogErrors
@@ -154,6 +163,7 @@ public class PostController {
         return postService.updatePost(post);
     }
 
+    @CrossOrigin
     @DeleteMapping("/post/{id}")
     @Authorize
     @LogErrors

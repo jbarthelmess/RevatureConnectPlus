@@ -20,6 +20,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @CrossOrigin
     @PostMapping("/user/registration")
     @LogEvent
     @LogErrors
@@ -48,6 +49,7 @@ public class UserController {
         return user;
     }
 
+    @CrossOrigin
     @PatchMapping("/user")
     @Authorize
     @LogErrors
@@ -68,6 +70,7 @@ public class UserController {
         return finished;
     }
 
+    @CrossOrigin
     @DeleteMapping("/user")
     @Authorize
     @LogErrors
@@ -75,6 +78,7 @@ public class UserController {
         return "{\"deleted\":"+this.userService.deleteUserByUserId(user.getUserId())+"}";
     }
 
+    @CrossOrigin
     @PostMapping("/user/login")
     @LogEvent
     @LogErrors
