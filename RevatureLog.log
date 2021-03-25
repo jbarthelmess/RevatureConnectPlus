@@ -1,0 +1,6 @@
+2021-03-25 15:37:41 INFO  LoggingAspect:42 - Login for User testUser2JWTInJSON
+2021-03-25 15:38:17 INFO  LoggingAspect:46 - New Registered User testingLogging
+2021-03-25 15:39:52 ERROR LoggingAspect:31 - Error thrown in request made by testingLogging. Method registerUser exited with error: 409 CONFLICT "Registration attempt failed, please choose a different username".
+2021-03-25 15:42:31 ERROR LoggingAspect:31 - Error thrown in request made by testingLogging. Method registerUser exited with error: 409 CONFLICT "Registration attempt failed, please choose a different username".
+2021-03-25 15:43:36 ERROR LoggingAspect:31 - Method registerUser exited with error: 409 CONFLICT "Registration attempt failed, please choose a different username".
+2021-03-25 15:49:19 ERROR LoggingAspect:31 - Error thrown in request made by null. Method retrieveVisiblePosts exited with error: 401 UNAUTHORIZED "No JWT provided. Please log in".

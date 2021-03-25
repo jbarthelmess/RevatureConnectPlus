@@ -1,6 +1,7 @@
 package dev.group1.controllers;
 
 import dev.group1.aspects.Authorize;
+import dev.group1.aspects.LogErrors;
 import dev.group1.dtos.CommentDTO;
 import dev.group1.dtos.PostDTO;
 import dev.group1.dtos.UserDTO;
@@ -34,16 +35,19 @@ public class PostController {
 
     @GetMapping("/post")
     @Authorize
+    @LogErrors
     public Set<Post> retrieveVisiblePosts(UserDTO user) {
         return postService.getFirst50Posts();
     }
 
     @GetMapping("/post/next/{timestamp}")
     @Authorize
+    @LogErrors
     public Set<Post> retrieveNextPosts(UserDTO user, @PathVariable long timestamp){ return postService.getNext50Posts(timestamp);}
 
     @PostMapping("/post")
     @Authorize
+    @LogErrors
     public Post createPost(UserDTO user, @RequestBody PostDTO postDTO) {
         // Using DTO object to prevent bad data from being written to database
         if(postDTO == null) {
@@ -63,6 +67,7 @@ public class PostController {
 
     @PostMapping("/post/{id}/like")
     @Authorize
+    @LogErrors
     public String likePost(UserDTO user, @PathVariable int id) {
         return "{\"liked\":\""+this.likeService.likePost(user.getUserId(), id)+"\"}";
     }
@@ -71,6 +76,7 @@ public class PostController {
 
     @PostMapping("/post/{id}/comment")
     @Authorize
+    @LogErrors
     public Comment commentPost(UserDTO user, @PathVariable int id, @RequestBody CommentDTO commentDTO) {
         if(commentDTO == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
@@ -92,6 +98,7 @@ public class PostController {
 
     @GetMapping("/post/{id}/comment")
     @Authorize
+    @LogErrors
     public Set<Comment> postComments(UserDTO user, @PathVariable int id) {
         User userExist = userService.getUserByUserId(user.getUserId());
         if(userExist == null){
@@ -107,6 +114,7 @@ public class PostController {
 
     @PutMapping("/post/{id}/comment/{commentId}")
     @Authorize
+    @LogErrors
     public Comment updateComment(UserDTO user, @PathVariable int id, @PathVariable int commentId, @RequestBody CommentDTO update) {
         if(update == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
@@ -124,12 +132,14 @@ public class PostController {
 
     @DeleteMapping("/post/{id}/comment/{commentId}")
     @Authorize
+    @LogErrors
     public String deleteComment(UserDTO user, @PathVariable int id, @PathVariable int commentId) {
         return "{\"deleted\":"+this.commentService.deleteComment(commentId, user.getUserId())+"}";
     }
 
     @PutMapping("/post/{id}")
     @Authorize
+    @LogErrors
     public Post updatePost(UserDTO user, @PathVariable int id, @RequestBody PostDTO postDTO) {
         if(postDTO == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No body given in request");
@@ -146,6 +156,7 @@ public class PostController {
 
     @DeleteMapping("/post/{id}")
     @Authorize
+    @LogErrors
     public String deletePost(UserDTO user, @PathVariable int id) {
         return "{\"deleted\":"+postService.deletePost(id, user)+"}";
     }
