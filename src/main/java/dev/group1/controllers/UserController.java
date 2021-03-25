@@ -2,6 +2,8 @@ package dev.group1.controllers;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import dev.group1.aspects.Authorize;
+import dev.group1.aspects.LogErrors;
+import dev.group1.aspects.LogEvent;
 import dev.group1.dtos.UserDTO;
 import dev.group1.entities.User;
 import dev.group1.services.UserService;
@@ -19,6 +21,8 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/user/registration")
+    @LogEvent
+    @LogErrors
     public User registerUser(@RequestBody UserDTO newUser){
         // Using DTO object to guarantee that existing users won't be accidentally overwritten
         if(newUser == null) {
@@ -46,6 +50,7 @@ public class UserController {
 
     @PatchMapping("/user")
     @Authorize
+    @LogErrors
     public User updateUser(UserDTO user, @RequestBody UserDTO updatedUser){
         // using DTO object to guarantee that bad data won't get written to the database
         User update = new User();
@@ -65,11 +70,14 @@ public class UserController {
 
     @DeleteMapping("/user")
     @Authorize
+    @LogErrors
     public String deleteUser(UserDTO user){
-        return "{\"jwt\":"+this.userService.deleteUserByUserId(user.getUserId())+"}";
+        return "{\"deleted\":"+this.userService.deleteUserByUserId(user.getUserId())+"}";
     }
 
     @PostMapping("/user/login")
+    @LogEvent
+    @LogErrors
     public User login(@RequestBody UserDTO loginAttempt) {
         // using DTO object to guarantee bad data won't get written to the database
         User attempt = new User();
