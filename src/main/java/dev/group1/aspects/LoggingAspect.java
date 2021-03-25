@@ -7,7 +7,6 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import org.apache.log4j.Logger;
@@ -18,7 +17,7 @@ public class LoggingAspect {
     static Logger logger = Logger.getLogger(LoggingAspect.class);
 
     @Pointcut("@annotation(dev.group1.aspects.LogErrors)")
-    private void logErrorCheck() {}
+    private void logErrorCheck() {/* just catching errors */}
 
     @AfterThrowing(value = "logErrorCheck()", throwing = "err")
     public void logThrownError(JoinPoint jp, Throwable err) throws Throwable {
@@ -33,7 +32,7 @@ public class LoggingAspect {
     }
 
     @Pointcut("@annotation(dev.group1.aspects.LogEvent)")
-    private void logEventCheck() {}
+    private void logEventCheck() {/* just catching errors*/ }
 
     @AfterReturning(value = "logEventCheck()", returning = "returnValue")
     public Object logUserEnterEvent(JoinPoint jp, Object returnValue) {
