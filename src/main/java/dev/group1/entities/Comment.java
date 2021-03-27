@@ -1,6 +1,8 @@
 package dev.group1.entities;
 
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,6 +27,9 @@ public class Comment {
 
     @Column(name = "comment_timestamp")
     private long timestamp;
+
+    @Formula("(select plus_user.display_name from plus_user where plus_user.user_id = comment0_.user_id)")
+    private String displayName;
 
     public Comment() {
     }
@@ -77,6 +82,14 @@ public class Comment {
         this.timestamp = timestamp;
     }
 
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     @Override
     public String toString() {
         return "Comment{" +
@@ -85,6 +98,7 @@ public class Comment {
                 ", postId=" + postId +
                 ", contentString='" + contentString + '\'' +
                 ", timestamp=" + timestamp +
+                ", displayName=" + displayName +
                 '}';
     }
 }

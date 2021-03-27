@@ -30,6 +30,9 @@ public class Post {
     @Formula("(select count(*) from like_ where like_.post_id = post0_.post_id)")
     private int likeCount;
 
+    @Formula("(select plus_user.display_name from plus_user where plus_user.user_id = post0_.user_id)")
+    private String displayName;
+
     public Post() {
     }
 
@@ -78,6 +81,14 @@ public class Post {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     @Override
