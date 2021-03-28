@@ -72,6 +72,6 @@ public class PostServiceImpl implements PostService {
     @Override
     /* for now use timestamp 1616075773L  for proof on concept*/
     public Set<Post> getNext50Posts(long timestamp) {
-        return this.postRepo.findTop50ByTimestampAfter(timestamp);
+        return this.postRepo.findBottom50ByTimestampBefore(timestamp);
     }
 }

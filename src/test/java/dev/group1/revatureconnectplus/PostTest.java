@@ -104,7 +104,8 @@ class PostTest {
 
     @Test
     void find_next_50(){
-        Set<Post> topPosts = postRepo.findTop50ByTimestampAfter(1616075773L);
+        Set<Post> topPosts = postRepo.findBottom50ByTimestampBefore(1616529027L);
+        System.out.println(topPosts);
         Assertions.assertTrue(topPosts.size() <= 50);
     }
 
