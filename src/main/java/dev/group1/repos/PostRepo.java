@@ -13,5 +13,5 @@ import java.util.Set;
 public interface PostRepo extends CrudRepository<Post, Integer> {
 
     Set<Post> findFirst50ByOrderByTimestamp();
-    Set<Post> findTop50ByTimestampAfter(Long timestamp);
+    Set<Post> findBottom50ByTimestampBefore(Long timestamp);
 }
