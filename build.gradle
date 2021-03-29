@@ -1,12 +1,30 @@
-plugins {
-	id 'org.springframework.boot' version '2.4.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.1'
+    }
 }
 
 plugins {
-  id "org.sonarqube" version "3.1.1"
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id "org.sonarqube" version "3.1.1"
+    id 'com.google.cloud.tools.appengine' version '2.4.1'
 }
+
+apply plugin: 'com.google.cloud.tools.appengine'
+
+appengine {
+    deploy {
+        stopPreviousVersion = true
+        promote = true
+    }
+}
+
 
 sonarqube {
   properties {
@@ -35,6 +53,7 @@ repositories {
 	mavenCentral()
 }
 
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -42,9 +61,9 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'com.auth0', name: 'java-jwt', version: '3.13.0'
-	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.4.3'
     compile group: 'log4j', name: 'log4j', version: '1.2.17'
 }
+
 
 test {
 	useJUnitPlatform()
